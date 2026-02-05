@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Book Stall</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            max-width: 800px;
+            margin-top: 30px;
+        }
+        .stall-info {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .booking-form {
+            background-color: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
+        <div class="container-fluid">
+            <a class="navbar-brand" th:href="@{/}">Stall Booking System</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/stalls/list}">Available Stalls</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#">Book Stall</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <h1 class="mb-4">Book a Stall</h1>
+
+    <!-- Stall Information Card -->
+    <div class="stall-info" th:if="${stall}">
+        <h3 th:text="${stall.name}">Food Stall</h3>
+        <p class="text-muted" th:text="${stall.category}">Food & Beverages</p>
+        <p th:text="${stall.description}">Delicious snacks and beverages for all occasions</p>
+
+        <div class="row mt-3">
+            <div class="col-md-6">
+                <p><strong>Location:</strong> <span th:text="${stall.location}">Main Ground - Area A</span></p>
+                <p><strong>Capacity:</strong> <span th:text="${stall.capacity}">100</span> people</p>
+            </div>
+            <div class="col-md-6">
+                <p><strong>Available Hours:</strong> <span th:text="${stall.availableFrom}">09:00</span> - <span th:text="${stall.availableTo}">21:00</span></p>
+                <p><strong>Price per hour:</strong> Rs.<span th:text="${stall.pricePerHour}">1500.00</span></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Booking Form -->
+    <div class="booking-form">
+        <h3 class="mb-4">Booking Details</h3>
+
+        <!-- Display error message if any -->
+        <div th:if="${error}" class="alert alert-danger" th:text="${error}">Error message</div>
+
+        <form th:action="@{/stalls/booking/book}" method="post" th:object="${bookingForm}">
+            <!-- Hidden field for stall ID -->
+            <input type="hidden" th:field="*{stallId}" th:value="${stall.id}">
+
+            <div class="row">
+                <!-- Customer Information -->
+                <div class="col-md-6 mb-3">
+                    <label for="customerName" class="form-label">Full Name *</label>
+                    <input type="text" class="form-control" id="customerName"
+                           th:field="*{customerName}" required>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label for="email" class="form-label">Email Address *</label>
+                    <input type="email" class="form-control" id="email"
+                           th:field="*{email}" required>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="phone" class="form-label">Phone Number *</label>
+                    <input type="tel" class="form-control" id="phone"
+                           th:field="*{phone}" required>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label for="eventName" class="form-label">Event Name (Optional)</label>
+                    <input type="text" class="form-control" id="eventName"
+                           th:field="*{eventName}">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="bookingDate" class="form-label">Booking Date *</label>
+                    <input type="date" class="form-control" id="bookingDate"
+                           th:field="*{bookingDate}" required>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label for="timeSlot" class="form-label">Time Slot *</label>
+                    <select class="form-select" id="timeSlot" th:field="*{timeSlot}" required>
+                        <option value="">Select a time slot</option>
+                        <option value="09:00-12:00">09:00 - 12:00</option>
+                        <option value="12:00-15:00">12:00 - 15:00</option>
+                        <option value="15:00-18:00">15:00 - 18:00</option>
+                        <option value="18:00-21:00">18:00 - 21:00</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="hours" class="form-label">Number of Hours *</label>
+                    <input type="number" class="form-control" id="hours"
+                           th:field="*{hours}" min="1" max="10" required>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label for="paymentMethod" class="form-label">Payment Method *</label>
+                    <select class="form-select" id="paymentMethod" th:field="*{paymentMethod}" required>
+                        <option value="">Select payment method</option>
+                        <option value="cash">Cash</option>
+                        <option value="card">Credit/Debit Card</option>
+                        <option value="upi">UPI</option>
+                        <option value="bank_transfer">Bank Transfer</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="specialRequest" class="form-label">Special Requests (Optional)</label>
+                <textarea class="form-control" id="specialRequest"
+                          th:field="*{specialRequest}" rows="3"></textarea>
+            </div>
+
+            <!-- Calculation Display -->
+            <div class="alert alert-info" role="alert">
+                <strong>Total Amount:</strong>
+                Rs.<span th:text="${stall.pricePerHour != null ? stall.pricePerHour * (bookingForm.hours != null ? bookingForm.hours : 1) : 0}">0</span>
+                (Rs.<span th:text="${stall.pricePerHour}">1500</span> × <span th:text="${bookingForm.hours != null ? bookingForm.hours : 1}">1</span> hours)
+            </div>
+
+            <!-- Buttons -->
+            <div class="d-flex justify-content-between">
+                <a th:href="@{/stalls/list}" class="btn btn-secondary">Cancel</a>
+                <button type="submit" class="btn btn-primary">Confirm Booking</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Footer -->
+    <footer class="mt-5 text-center text-muted">
+        <p>© 2024 Stall Booking System</p>
+    </footer>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Script to calculate total amount -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const hoursInput = document.getElementById('hours');
+        const pricePerHour = [[${stall.pricePerHour != null ? stall.pricePerHour : 1500}]];
+
+        function updateTotal() {
+            const hours = hoursInput.value || 1;
+            const total = pricePerHour * hours;
+            const totalSpan = document.querySelector('.alert-info span');
+            if (totalSpan) {
+                totalSpan.textContent = total;
+            }
+        }
+
+        hoursInput.addEventListener('input', updateTotal);
+        updateTotal(); // Initial calculation
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${pageTitle ?: 'My Bookings'}">My Bookings</title>
+
+    <style>
+        /* Basic reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8f9fa;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .page-description {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            margin-bottom: 20px;
+        }
+
+        .bookings-container {
+            display: grid;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .booking-card {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            border-left: 5px solid #4f46e5;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .booking-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.12);
+        }
+
+        .booking-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+
+        .booking-title {
+            color: #4f46e5;
+            font-size: 1.4rem;
+        }
+
+        .booking-status {
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .status-confirmed {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .status-pending {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .status-cancelled {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .booking-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .detail-item {
+            background: #f8fafc;
+            padding: 12px;
+            border-radius: 6px;
+        }
+
+        .detail-label {
+            font-weight: 600;
+            color: #64748b;
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+        }
+
+        .detail-value {
+            font-size: 1.1rem;
+            color: #1e293b;
+        }
+
+        .booking-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn-view {
+            background: #e0e7ff;
+            color: #4f46e5;
+        }
+
+        .btn-cancel {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        .btn-download {
+            background: #dcfce7;
+            color: #16a34a;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 50px 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .empty-icon {
+            font-size: 4rem;
+            color: #cbd5e1;
+            margin-bottom: 20px;
+        }
+
+        .empty-title {
+            color: #64748b;
+            margin-bottom: 10px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            color: white;
+            padding: 12px 30px;
+            font-size: 1.1rem;
+            margin-top: 20px;
+        }
+
+        .btn-primary:hover {
+            box-shadow: 0 5px 15px rgba(79, 70, 229, 0.3);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+            justify-content: center;
+        }
+
+        .nav-link {
+            color: #4f46e5;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            transition: all 0.3s;
+        }
+
+        .nav-link:hover {
+            background: #e0e7ff;
+        }
+
+        .debug-info {
+            background: #f1f5f9;
+            padding: 15px;
+            border-radius: 6px;
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: #64748b;
+        }
+
+        @media (max-width: 768px) {
+            .booking-details {
+                grid-template-columns: 1fr;
+            }
+
+            .booking-actions {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+
+            .nav-links {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>📋 My Bookings</h1>
+        <p class="page-description">Manage and view all your stall bookings in one place</p>
+        <div class="debug-info">
+            <strong>Debug Info:</strong> Page loaded successfully |
+            <span th:text="'Bookings count: ' + (${bookings != null} ? ${bookings.size()} : 0)">Bookings count: 0</span>
+        </div>
+    </header>
+
+    <div class="bookings-container">
+        <!-- Check if bookings exist -->
+        <div th:if="${bookings != null and !bookings.isEmpty()}">
+            <div th:each="booking : ${bookings}" class="booking-card">
+                <div class="booking-header">
+                    <h2 class="booking-title" th:text="'Booking #' + ${booking.id}">Booking #1</h2>
+                    <span class="booking-status status-confirmed" th:text="${booking.status}">Confirmed</span>
+                </div>
+
+                <div class="booking-details">
+                    <div class="detail-item">
+                        <div class="detail-label">Stall Name</div>
+                        <div class="detail-value" th:text="${booking.stallName}">Food Stall</div>
+                    </div>
+
+                    <div class="detail-item">
+                        <div class="detail-label">Booking Date</div>
+                        <div class="detail-value" th:text="${booking.date}">2025-12-25</div>
+                    </div>
+
+                    <div class="detail-item">
+                        <div class="detail-label">Amount</div>
+                        <div class="detail-value" th:text="${booking.price ?: 'RS1,500.00'}">RS1,500.00</div>
+                    </div>
+                </div>
+
+                <div class="booking-actions">
+                    <button class="btn btn-view">View Details</button>
+                    <button class="btn btn-cancel">Cancel Booking</button>
+                    <button class="btn btn-download">Download Receipt</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Show when no bookings -->
+        <div th:if="${bookings == null or bookings.isEmpty()}" class="empty-state">
+            <div class="empty-icon">📭</div>
+            <h2 class="empty-title">No Bookings Yet</h2>
+            <p>You haven't made any stall bookings. Browse available stalls and make your first booking!</p>
+            <a href="/stalls" class="btn btn-primary">Browse Available Stalls</a>
+
+            <!-- For testing: Add sample booking -->
+            <div style="margin-top: 20px;">
+                <a href="/my-bookings/add-sample" class="btn" style="background: #f1f5f9; color: #64748b;">
+                    Add Sample Booking (Testing)
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ✅ UPDATED: Removed H2 Database link -->
+    <div class="nav-links">
+        <a href="/" class="nav-link">🏠 Back to Home</a>
+        <a href="/stalls" class="nav-link">📍 Browse Stalls</a>
+        <a href="/my-bookings/add-sample" class="nav-link">➕ Add Test Booking</a>
+        <!-- H2 Database link removed as requested -->
+    </div>
+
+    <div class="debug-info" style="margin-top: 30px;">
+        <strong>Application Status:</strong> Running on port 8081 |
+        <span th:text="'Current Time: ' + ${#dates.format(#dates.createNow(), 'dd-MM-yyyy HH:mm:ss')}">Time</span> |
+        <a href="/my-bookings" style="color: #4f46e5;">Refresh Page</a>
+    </div>
+</div>
+
+<script>
+    console.log("My Bookings page loaded successfully");
+
+    // Add interactivity to buttons
+    document.querySelectorAll('.btn-cancel').forEach(button => {
+        button.addEventListener('click', function() {
+            if (confirm('Are you sure you want to cancel this booking?')) {
+                this.innerHTML = 'Cancelling...';
+                this.disabled = true;
+                // Simulate API call
+                setTimeout(() => {
+                    alert('Booking cancelled successfully!');
+                    location.reload();
+                }, 1000);
+            }
+        });
+    });
+
+    // Auto-refresh page every 30 seconds (optional)
+    // setTimeout(() => location.reload(), 30000);
+
+    // Log for debugging
+    window.addEventListener('load', () => {
+        const bookingsCount = document.querySelectorAll('.booking-card').length;
+        console.log(`Found ${bookingsCount} bookings on page`);
+    });
+</script>
+</body>
+</html>

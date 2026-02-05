@@ -1,0 +1,22 @@
+2026-01-27 00:23:17 - GET "/stalls/booking/4", parameters={}
+2026-01-27 00:23:17 - Mapped to com.example.StudentRegistrationSystem.stalls.controller.StallController#showBookingForm(Long, Model)
+2026-01-27 00:23:17 - 
+    select
+        s1_0.id,
+        s1_0.available_from,
+        s1_0.available_to,
+        s1_0.capacity,
+        s1_0.category,
+        s1_0.description,
+        s1_0.is_available,
+        s1_0.location,
+        s1_0.name,
+        s1_0.price_per_hour 
+    from
+        stalls s1_0 
+    where
+        s1_0.id=?
+2026-01-27 00:23:17 - Selected 'text/html' given [text/html, application/xhtml+xml, image/avif, image/webp, image/apng, application/xml;q=0.9, */*;q=0.8, application/signed-exchange;v=b3;q=0.7]
+2026-01-27 00:23:17 - Completed 200 OK
+2026-01-27 01:18:51 - Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-01-27 01:18:51 - Invocation of destroy method failed on bean with name 'inMemoryDatabaseShutdownExecutor': org.h2.jdbc.JdbcSQLNonTransientConnectionException: Database is already closed (to disable automatic closing at VM shutdown, add ";DB_CLOSE_ON_EXIT=FALSE" to the db URL) [90121-224]

@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>How to Book – Stall Booking System</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #111, #222);
+            color: #fff;
+            min-height: 100vh;
+        }
+
+        /* TOP NAVBAR – same style everywhere */
+        .navbar {
+            background: #000;
+            padding: 14px 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.6);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .navbar .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: #32CD32; /* green */
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 28px;
+        }
+
+        .nav-links a {
+            color: #f5f5f5;
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 500;
+            position: relative;
+            padding-bottom: 3px;
+        }
+
+        .nav-links a::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 0;
+            height: 2px;
+            background: #32CD32;
+            transition: width 0.2s ease;
+        }
+
+        .nav-links a:hover::after,
+        .nav-links a.active::after {
+            width: 100%;
+        }
+
+        /* PAGE LAYOUT */
+        .page-wrapper {
+            padding: 40px 40px 60px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .card {
+            max-width: 900px;
+            width: 100%;
+            background: #111;
+            border-radius: 24px;
+            padding: 30px 30px 36px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.7);
+        }
+
+        .pill {
+            display: inline-block;
+            background: #32CD32;
+            color: #000;
+            padding: 6px 14px;
+            border-radius: 999px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 18px;
+        }
+
+        h1 {
+            font-size: 32px;
+            margin-bottom: 14px;
+        }
+
+        .lead {
+            font-size: 15px;
+            color: #ddd;
+            margin-bottom: 24px;
+        }
+
+        h2 {
+            font-size: 20px;
+            margin: 22px 0 8px;
+        }
+
+        ol {
+            margin-left: 22px;
+            line-height: 1.7;
+            font-size: 15px;
+        }
+
+        ul {
+            margin-left: 22px;
+            line-height: 1.7;
+            font-size: 15px;
+        }
+
+        strong {
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<header class="navbar">
+    <div class="logo">StallBooking</div>
+    <nav class="nav-links">
+        <a th:href="@{/}">Home</a>
+        <a th:href="@{/stalls}">Available Stalls</a>
+        <a th:href="@{/how-to-book}" class="active">How to Book</a>
+        <a th:href="@{/my-bookings}">My Bookings</a>
+        <a th:href="@{/admin/dashboard}">Admin</a>
+    </nav>
+</header>
+
+<!-- PAGE CONTENT -->
+<div class="page-wrapper">
+    <div class="card">
+        <span class="pill">Step by Step Guide</span>
+
+        <h1>How to Book a Stall</h1>
+        <p class="lead">
+            Follow these simple steps to book a stall for your campus event, exhibition or
+            business activity using our online system.
+        </p>
+
+        <h2>1. View Available Stalls</h2>
+        <ol>
+            <li>Click on <strong>"Available Stalls"</strong> in the top menu or from the home page button.</li>
+            <li>Check stall details such as location, capacity, time slots and hourly price.</li>
+        </ol>
+
+        <h2>2. Fill Booking Form</h2>
+        <ol>
+            <li>Select a stall and click the <strong>"Book Now"</strong> button.</li>
+            <li>Choose the required <strong>date, start time and end time</strong>.</li>
+            <li>Enter your name / student ID and any additional notes.</li>
+            <li>Click <strong>"Confirm Booking"</strong>.</li>
+        </ol>
+
+        <h2>3. Confirmation</h2>
+        <ol>
+            <li>After submission, you will see a confirmation message.</li>
+            <li>The booking appears in the <strong>"My Bookings"</strong> page with status
+                <strong>CONFIRMED</strong> (or PENDING based on your rules).</li>
+        </ol>
+
+        <h2>4. Payment (if applicable)</h2>
+        <ol>
+            <li>Pay the stall fee at the campus finance office or via the method informed by admin.</li>
+            <li>Show your booking ID during payment for verification.</li>
+        </ol>
+
+        <h2>5. On the Event Day</h2>
+        <ul>
+            <li>Arrive at least 15–30 minutes before your booked time.</li>
+            <li>Show your booking confirmation or student ID at the stall allocation desk.</li>
+            <li>Set up your stall and enjoy the event!</li>
+        </ul>
+    </div>
+</div>
+
+</body>
+</html>

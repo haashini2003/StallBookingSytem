@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>User Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #0f172a;
+            color: #e5e7eb;
+        }
+        .wrapper {
+            max-width: 900px;
+            margin: 30px auto;
+        }
+        h1 { font-size: 22px; margin-bottom: 10px; }
+        .subtitle { font-size: 13px; color: #9ca3af; margin-bottom: 20px; }
+        .quick-row { display: flex; gap: 12px; margin-bottom: 20px; }
+        .card {
+            background: #020617;
+            padding: 14px 16px;
+            border-radius: 14px;
+            flex: 1;
+            font-size: 13px;
+        }
+        .card-title { font-size: 14px; margin-bottom: 8px; font-weight: 600; }
+        .card-btn {
+            margin-top: 10px;
+            padding: 6px 12px;
+            border-radius: 999px;
+            border: none;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        .primary { background: #22c55e; color: #020617; font-weight: 600; }
+        .secondary { background: transparent; color: #e5e7eb; border: 1px solid #374151; }
+    </style>
+</head>
+<body>
+
+<div class="wrapper">
+    <h1>Welcome to Stall Booking</h1>
+    <div class="subtitle">
+        Quick access to your bookings, profile and payment details.
+    </div>
+
+    <div class="quick-row">
+        <div class="card">
+            <div class="card-title">My Bookings</div>
+            <div>View, track or cancel your existing stall bookings.</div>
+            <button class="card-btn primary" onclick="location.href='/my-bookings'">
+                Go to My Bookings
+            </button>
+        </div>
+
+        <div class="card">
+            <div class="card-title">Book a Stall</div>
+            <div>Find available stalls and reserve for your next event.</div>
+            <button class="card-btn secondary" onclick="location.href='/stalls'">
+                View Stalls
+            </button>
+        </div>
+
+        <div class="card">
+            <div class="card-title">Payment Info</div>
+            <div>Check payment status with admin if needed.</div>
+            <button class="card-btn secondary" onclick="location.href='/admin/dashboard'">
+                Contact Admin
+            </button>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
